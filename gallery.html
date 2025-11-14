@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Belladonna Guest House</title>
+    <meta name="description" content="View photos of our beautiful rooms, lush gardens, swimming pool, and the scenic surroundings of Mbombela at Belladonna Guest House.">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            },
+            colors: {
+              'brand-green': '#5A7D7C',
+              'brand-green-dark': '#4B6867',
+              'brand-bg': '#FBF9F6',
+              'brand-text': '#333333',
+              'dark-bg': '#2C3531',
+              'dark-text': '#E2E8F0',
+              'dark-accent': '#81A1A0',
+              'subtle-bg': '#F1F1F1'
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .masonry-grid { column-count: 2; column-gap: 1rem; }
+        @media (min-width: 768px) { .masonry-grid { column-count: 3; } }
+        .masonry-grid > div { break-inside: avoid; margin-bottom: 1rem; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.10/dist/cdn.min.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+
+</head>
+<body x-data="app()" x-init="init()" class="bg-brand-bg text-brand-text font-sans antialiased dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
+
+    <!-- Header -->
+    <header x-data="{ open: false }" @keydown.escape.window="open = false" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-brand-bg/80 dark:bg-dark-bg/80 backdrop-blur-sm shadow-md">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <a href="index.html" class="flex-shrink-0 group flex items-center space-x-3">
+                    <img src="public/media/logo.webp" alt="Belladonna Guest House Logo" class="h-14 w-auto">
+                    <div class="hidden sm:flex flex-col leading-tight">
+                        <span class="font-bold text-xl text-brand-green dark:text-dark-accent">Belladonna</span>
+                        <span class="text-xs font-semibold tracking-wider text-brand-text/70 dark:text-dark-text/70">GUEST HOUSE</span>
+                    </div>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="pb-1 text-brand-text/80 hover:text-brand-text dark:text-dark-text/80 dark:hover:text-dark-text transition-colors border-b-2 border-transparent hover:border-brand-green/50">Home</a>
+                    <a href="rooms.html" class="pb-1 text-brand-text/80 hover:text-brand-text dark:text-dark-text/80 dark:hover:text-dark-text transition-colors border-b-2 border-transparent hover:border-brand-green/50">Rooms</a>
+                    <a href="gallery.html" class="pb-1 font-semibold text-brand-green dark:text-dark-accent border-b-2 border-brand-green dark:border-dark-accent">Gallery</a>
+                    <a href="contact.html" class="pb-1 text-brand-text/80 hover:text-brand-text dark:text-dark-text/80 dark:hover:text-dark-text transition-colors border-b-2 border-transparent hover:border-brand-green/50">Contact</a>
+                    <a href="booking.html" class="ml-4 inline-block bg-brand-green text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-brand-green-dark transition-all transform hover:scale-105 duration-300">Book Now</a>
+                    <button @click="toggleTheme()" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors" aria-label="Toggle theme">
+                        <svg x-show="!isDarkMode" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                        <svg x-show="isDarkMode" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button @click="open = !open" class="inline-flex items-center justify-center p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 focus:outline-none" aria-label="Open menu">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            <path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div x-show="open" x-transition class="md:hidden bg-brand-bg dark:bg-dark-bg border-t border-black/10 dark:border-white/10" x-cloak>
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/10">Home</a>
+                <a href="rooms.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/10">Rooms</a>
+                <a href="gallery.html" class="block px-3 py-2 rounded-md text-base font-medium bg-brand-green/10 text-brand-green dark:bg-dark-accent/10 dark:text-dark-accent">Gallery</a>
+                <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/10">Contact</a>
+                <a href="booking.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/10">Book Now</a>
+                <button @click="toggleTheme()" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/10">Toggle Theme</button>
+            </div>
+        </div>
+    </header>
+
+    <main x-data="gallery()">
+        <!-- Page Header -->
+        <section class="pt-28 pb-16 md:pt-40 md:pb-24 bg-subtle-bg dark:bg-black/20 text-center">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl sm:text-4xl md:text-6xl font-sans font-bold text-brand-text dark:text-dark-text">Photo Gallery</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-brand-text/80 dark:text-dark-text/80">A glimpse into the Belladonna experience.</p>
+            </div>
+        </section>
+
+        <!-- Gallery Grid -->
+        <section class="py-20 md:py-32 bg-brand-bg dark:bg-dark-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="masonry-grid">
+                    <template x-for="(image, index) in images" :key="index">
+                        <div>
+                            <img @click="openLightbox(index)" :src="image.thumb" :alt="image.alt"
+                                 loading="lazy"
+                                 class="rounded-lg shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer w-full h-auto object-cover bg-subtle-bg dark:bg-dark-bg/50">
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lightbox Modal -->
+        <div x-show="lightboxOpen" 
+             @keydown.escape.window="closeLightbox()"
+             @keydown.arrow-right.window="nextImage()"
+             @keydown.arrow-left.window="prevImage()"
+             class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             x-cloak>
+            
+            <div @click.away="closeLightbox()" class="relative max-w-5xl max-h-full w-full h-auto">
+                <!-- Preload adjacent images -->
+                <template x-if="images[currentImageIndex - 1]">
+                    <link rel="prefetch" :href="images[currentImageIndex - 1].full">
+                </template>
+                <template x-if="images[currentImageIndex + 1]">
+                    <link rel="prefetch" :href="images[currentImageIndex + 1].full">
+                </template>
+
+                <img :src="images[currentImageIndex].full" :alt="images[currentImageIndex].alt" class="rounded-lg object-contain w-full h-full max-h-[85vh]">
+                
+                <button @click="closeLightbox()" aria-label="Close lightbox" class="absolute -top-2 -right-2 md:-top-4 md:-right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/80 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                
+                <button @click="prevImage()" aria-label="Previous image" class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-12 text-white bg-black/50 rounded-full p-2 hover:bg-black/80 transition hidden md:block">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                
+                <button @click="nextImage()" aria-label="Next image" class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-12 text-white bg-black/50 rounded-full p-2 hover:bg-black/80 transition hidden md:block">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </button>
+
+                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent rounded-b-lg">
+                    <p class="text-white text-center text-sm" x-text="images[currentImageIndex].alt"></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark-bg text-dark-text/80">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h4 class="text-lg font-sans font-bold"><span class="text-white">Belladonna</span> <span class="text-dark-accent">Guest House</span></h4>
+                    <p class="mt-2 text-sm">1 Belladonna Street,<br>Cnr Dr Enos Mabuza Dr, West Acres Ext 4,<br>Mbombela (Nelspruit), 1201</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-sans font-bold text-white">Quick Links</h4>
+                    <ul class="mt-2 space-y-1 text-sm">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="rooms.html" class="hover:text-white transition-colors">Rooms</a></li>
+                        <li><a href="booking.html" class="hover:text-white transition-colors">Booking</a></li>
+                        <li><a href="gallery.html" class="hover:text-white transition-colors">Gallery</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="legal.html" class="hover:text-white transition-colors">Privacy & Terms</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-sans font-bold text-white">Connect</h4>
+                    <p class="mt-2 text-sm">
+                        Tel: <a href="tel:0137414802" class="hover:text-white transition-colors">013 741 4802</a><br>
+                        Cell: <a href="tel:+27636084576" class="hover:text-white transition-colors">+27 63 608 4576</a><br>
+                        Email: <a href="mailto:booking@belladonaguesthouse.co.za" class="hover:text-white transition-colors">booking@belladonaguesthouse.co.za</a>
+                    </p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-white/10 text-center text-sm">
+                <p>&copy; <span id="currentYear"></span> Belladonna Guest House. All Rights Reserved. | Developed by Bizwhatwhat</p>
+            </div>
+        </div>
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "LodgingBusiness",
+          "name": "Belladonna Guest House",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "1 Belladonna Street, Cnr Dr Enos Mabuza Dr",
+            "addressLocality": "West Acres Ext 4",
+            "addressRegion": "Mpumalanga",
+            "postalCode": "1201",
+            "addressCountry": "ZA"
+          },
+          "telephone": "0137414802",
+          "email": "booking@belladonaguesthouse.co.za",
+          "priceRange": "ZAR"
+        }
+        </script>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/27636084576" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="fixed bottom-5 right-5 z-50 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-transform transform hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+        </svg>
+    </a>
+    
+    <!-- Back to Top Button -->
+    <button x-show="showBackToTop" @click="window.scrollTo({ top: 0, behavior: 'smooth' })" x-transition class="fixed bottom-20 right-5 z-50 bg-brand-green/80 dark:bg-dark-accent/80 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-brand-green dark:hover:bg-dark-accent transition-all duration-300 transform hover:scale-110" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+    </button>
+
+    <!-- Cookie Consent Banner -->
+    <div x-show="!cookiesAccepted" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform translate-y-4" class="fixed bottom-4 left-4 z-50 max-w-md" x-cloak>
+        <div class="p-4 rounded-lg bg-dark-bg/90 dark:bg-subtle-bg/95 backdrop-blur-sm shadow-2xl flex items-center space-x-4">
+            <p class="text-sm text-dark-text dark:text-brand-text flex-grow">
+                This website uses cookies to enhance your experience. 
+                <a href="legal.html" class="font-bold underline hover:text-white dark:hover:text-brand-green">Learn more</a>.
+            </p>
+            <button @click="acceptCookies()" type="button" class="flex-shrink-0 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-dark-bg bg-white hover:bg-gray-200 transition-colors">
+                Accept
+            </button>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "Belladonna Guest House",
+  "description": "A serene and comfortable guest house in the heart of Mbombela (Nelspruit). This web application provides information about rooms, a gallery, and contact details for booking a stay.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
