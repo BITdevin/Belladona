@@ -2,33 +2,33 @@ import React from 'react';
 
 const GalleryPage: React.FC = () => {
   const imageSources = [
-    // === YOUR FIXED ORDER (1–5 + 8) ===
-    '/media/hero-background.webp',        // 1
-    '/media/courtyard-view-full.webp',    // 2
-    '/media/outise10.webp',               // 3
-    '/media/outise6.webp',                // 4
-    '/media/outise9.webp',                // 5
-    '/media/outise7.webp',                // 6 → now moved to end
+    // === YOUR ORDER (1–5 + 8) ===
+    '/media/hero-background.webp',        // 1 - OK
+    '/media/courtyard-view-full.webp',    // 2 - FIXED
+    '/media/outise10.webp',               // 3 - OK
+    '/media/outise6.webp',                // 4 - OK
+    '/media/outise9.webp',                // 5 - FIXED
+    '/media/outise7.webp',                // 6
 
-    // === Remaining exterior shots (newest first) ===
-    '/media/outise8.webp',
-    '/media/outise4.webp',
-    '/media/outise5.webp',
-    '/media/outise11.webp',
-    '/media/outise2.webp',
-    '/media/outise3.webp',
-    '/media/outside.webp',
+    // === Remaining exteriors ===
+    '/media/outise8.webp',                // 7
+    '/media/outise4.webp',                // 8 - FIXED
+    '/media/outise5.webp',                // 9
+    '/media/outise11.webp',               // 10
+    '/media/outise2.webp',                // 11 - FIXED
+    '/media/outise3.webp',                // 12 - FIXED
+    '/media/outside.webp',                // 13
 
     // === Room interiors ===
-    '/media/room-double.webp',
-    '/media/Twinroom.webp',
-    '/media/Twinroom1.webp',
-    '/media/Twinroom4.webp',
-    '/media/standard1.webp',
+    '/media/room-double.webp',            // 14
+    '/media/Twinroom.webp',               // 15
+    '/media/Twinroom1.webp',              // 16
+    '/media/Twinroom4.webp',              // 17 - FIXED
+    '/media/standard1.webp',              // 18
 
-    // === MOVED TO END: Picture 6 & 7 ===
-    '/media/outise13.webp',               // ← was 6, now last
-    '/media/outise12.webp',               // ← was 7, now second-to-last
+    // === Moved to end ===
+    '/media/outise13.webp',               // 19
+    '/media/outise12.webp',               // 20 - FIXED
   ];
 
   return (
@@ -70,6 +70,10 @@ const GalleryPage: React.FC = () => {
                     alt={`${cleanName} at Belladonna Guest House`}
                     loading="lazy"
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 ease-in-out cursor-pointer"
+                    onError={(e) => {
+                      console.warn(`Failed to load image: ${src}`);
+                      e.currentTarget.src = '/media/fallback.webp'; // optional fallback
+                    }}
                   />
                 </div>
               );
